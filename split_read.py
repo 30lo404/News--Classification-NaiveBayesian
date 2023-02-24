@@ -20,9 +20,9 @@ class NBay(object):
         self.training_data = []
     def split(self, training_percent):
         if os.path.exists(self.test_path):
-            os.system("rm -r %s" % self.test_path)
+            shutil.rmtree(self.test_path)
         if os.path.exists(self.training_path):
-            os.system("rm -r %s" % self.training_path)
+            shutil.rmtree(self.training_path)
         os.makedirs(self.test_path)
         os.makedirs(self.training_path)
         
@@ -41,9 +41,9 @@ class NBay(object):
             # print(training_names)
             for i in data_names:
                 if i in training_names:
-                    os.system("cp %s %s" % (os.path.join(data_folder_path, i), data_folder_training_path))
+                    shutil.copy(os.path.join(data_folder_path, i), data_folder_training_path)
                 else:
-                    os.system("cp %s %s" % (os.path.join(data_folder_path, i), data_folder_test_path))
+                    shutil.copy(os.path.join(data_folder_path, i), data_folder_test_path)
     #open and read the files in given path
     def read_file(self):
         print(self.data_classes)
@@ -59,13 +59,13 @@ class NBay(object):
                 #combine the file path with folder path and file name
                 file = os.path.join(data_folder_path, files[i])
                 #open file
-                f = open(file, 'r')
+                f = open(file, encoding='utf-8', errors='ignore')
                 # read everyline in file to the 'lines'
                 lines = f.readlines()
                 temp_list = []
                 for line in lines:
                     # remove all other symbols except words
-                    line = re.sub(r'[\W]', " ",line)
+                    line = re.sub(r"[\W]", " ", line)
                     # split the str line into list, and add them into 'temp_list'
                     temp_list += line.split()
                 f.close()
@@ -73,9 +73,8 @@ class NBay(object):
                 class_word_list += temp_list
             self.training_data.append(class_word_list)
         print(len(self.training_data))
-        print(self.training_data[0])
+        print(self.training_data[19])
 
-    
 
 temp = NBay()
 temp.source_path = sys.argv[1]
